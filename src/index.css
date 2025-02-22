@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  @apply bg-slate-950;
+}
+
+.background-layer {
+  @apply bg-[radial-gradient(circle_500px_at_50%_200px,#3e3e3e,transparent)];
+}
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
