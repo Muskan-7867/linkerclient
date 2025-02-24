@@ -15,6 +15,7 @@ import TemplateDetail from "./pages/Template/TemplateDetail";
 import LinksDisplay from "./components/LinkDisplay";
 import LinkForm from "./components/Forms/Form";
 import LinktreeTemplate from "./components/LinktreeTemplate";
+import LinktreePage from "./components/LinktreePage";
 
 interface Link {
   title: string;
@@ -55,6 +56,7 @@ const App: React.FC = () => {
             path="/linktree-template"
             element={<LinktreeTemplate treeName={treeName} links={links} />}
           />
+           <Route path="/linktree/:treeId" element={<LinktreePage />} />
         </Routes>
       </div>
     </>
