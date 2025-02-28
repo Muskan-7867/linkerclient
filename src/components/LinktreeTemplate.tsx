@@ -3,20 +3,17 @@ import { motion } from "framer-motion";
 import { deletelinktree } from "../services/deletelinktree";
 import { editLinktree } from "../services/editlinktree";
 import { useNavigate } from "react-router-dom";
-import { FaEdit, FaSave, FaTrash } from "react-icons/fa";
-import * as FaIcons from "react-icons/fa"; // Import all FontAwesome icons
+import { FaEdit, FaSave, FaTrash, FaCopy, FaExternalLinkAlt } from "react-icons/fa";
+import * as FaIcons from "react-icons/fa";
 
 interface Link {
   title: string;
-  icon?: string; // Icon stored as a string (e.g., "FaHome")
+  icon?: string;
   url: string;
 }
 
 const DynamicIcon = ({ iconName }: { iconName?: string }) => {
-  console.log("Icon Name:", iconName); // Debugging: Log the icon name
-
   if (!iconName || !(iconName in FaIcons)) {
-    console.log("Icon not found, using fallback icon"); // Debugging: Log when fallback is used
     return <span className="text-xl">🔗</span>;
   }
 
@@ -30,70 +27,64 @@ const LinktreeTemplate: React.FC = () => {
   const [treeName, setTreeName] = useState<string>("Untitled Linktree");
   const [links, setLinks] = useState<Link[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [deleteMessage, setDeleteMessage] = useState<string>("");
-  const [deleteError, setDeleteError] = useState<string>("");
+  // const [deleteMessage, setDeleteMessage] = useState<string>("");
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
-  const [deleteTreeIdInput, setDeleteTreeIdInput] = useState<string>("");
+  const [linktreeUrl, setLinktreeUrl] = useState<string>("");
 
   useEffect(() => {
     const storedTreeId = localStorage.getItem("treeId");
     const storedTreeName = localStorage.getItem("treeName");
     const storedLinks = localStorage.getItem("links");
-
+    const storedLinktreeUrl = localStorage.getItem("linktreeUrl");
+  
+    console.log("LocalStorage Data:", {
+      storedTreeId,
+      storedTreeName,
+      storedLinks,
+      storedLinktreeUrl
+    });
+  
     if (storedTreeId) setTreeId(storedTreeId);
     if (storedTreeName) setTreeName(storedTreeName);
     if (storedLinks) setLinks(JSON.parse(storedLinks));
+    if (storedLinktreeUrl) setLinktreeUrl(storedLinktreeUrl);
   }, []);
+  
+  
 
   const handleEdit = async () => {
     try {
       const data = { id: treeId, treeName, links };
-      const response = await editLinktree(data);
-      console.log("Linktree updated successfully:", response);
+      await editLinktree(data);
 
       localStorage.setItem("treeId", treeId);
       localStorage.setItem("treeName", treeName);
       localStorage.setItem("links", JSON.stringify(links));
 
-      alert("Linktree updated successfully!");
-      setTreeId("");
+      alert("✅ Linktree updated successfully!");
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating Linktree:", error);
-      alert("Failed to update Linktree. Please try again.");
+      alert("❌ Failed to update Linktree. Please try again.");
     }
   };
 
   const handleDelete = async () => {
-    if (!showDeleteConfirmation) {
-      setShowDeleteConfirmation(true);
-      return;
-    }
-
-    if (deleteTreeIdInput !== treeId) {
-      setDeleteError("Tree ID does not match. Please enter the correct Tree ID.");
-      return;
-    }
-
     try {
-      const result = await deletelinktree(treeId);
-      setDeleteMessage(result.message);
+      await deletelinktree(treeId);
       navigate('/');
-      setDeleteError("");
 
       localStorage.removeItem("treeId");
       localStorage.removeItem("treeName");
       localStorage.removeItem("links");
+
       setTreeId("");
       setTreeName("Untitled Linktree");
       setLinks([]);
       setShowDeleteConfirmation(false);
     } catch (error) {
-      if (error instanceof Error) {
-        setDeleteError(error.message);
-      } else {
-        setDeleteError("An unexpected error occurred.");
-      }
+      console.error("Error deleting Linktree:", error);
+      alert("❌ Failed to delete Linktree.");
     }
   };
 
@@ -133,70 +124,36 @@ const LinktreeTemplate: React.FC = () => {
           </motion.h2>
         )}
 
+        {/* Display Linktree URL */}
+        {linktreeUrl && (
+          <div className="flex items-center justify-between bg-gray-200 px-4 py-2 rounded-lg mb-4">
+            <span className="text-gray-700 truncate">{linktreeUrl}</span>
+            <div className="flex space-x-2">
+              <FaCopy
+                className="text-gray-600 cursor-pointer hover:text-black"
+                onClick={() => {
+                  navigator.clipboard.writeText(linktreeUrl);
+                  alert("📋 Link copied to clipboard!");
+                }}
+              />
+              <a href={`/linktree/${treeId}`} target="_blank" rel="noopener noreferrer">
+                <FaExternalLinkAlt className="text-blue-500 cursor-pointer hover:text-blue-700" />
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* Display Links */}
         <div className="mt-6 space-y-4">
           {links.length > 0 ? (
             links.map((link, index) => (
               <motion.div key={index} className="p-4 bg-white bg-opacity-20 rounded-xl shadow-lg flex items-center transition hover:scale-105 hover:shadow-xl">
                 <div className="w-12 h-12 flex items-center justify-center bg-white rounded-full mr-4">
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={link.icon || ""}
-                      onChange={(e) => {
-                        const updatedLinks = [...links];
-                        updatedLinks[index].icon = e.target.value;
-                        setLinks(updatedLinks);
-                      }}
-                      className="w-12 h-12 flex items-center justify-center bg-white rounded-full text-xl"
-                      placeholder="Icon"
-                    />
-                  ) : (
-                    <DynamicIcon iconName={link.icon} />
-                  )}
+                  <DynamicIcon iconName={link.icon} />
                 </div>
                 <div className="flex-1">
-                  {isEditing ? (
-                    <>
-                      <input
-                        type="text"
-                        value={link.title}
-                        onChange={(e) => {
-                          const updatedLinks = [...links];
-                          updatedLinks[index].title = e.target.value;
-                          setLinks(updatedLinks);
-                        }}
-                        className="text-lg font-semibold text-black bg-transparent border-b w-full outline-none"
-                        placeholder="Title"
-                      />
-                      <input
-                        type="text"
-                        value={link.url}
-                        onChange={(e) => {
-                          const updatedLinks = [...links];
-                          updatedLinks[index].url = e.target.value;
-                          setLinks(updatedLinks);
-                        }}
-                        className="text-sm text-blue-400 bg-transparent border-b w-full outline-none mt-2"
-                        placeholder="URL"
-                      />
-                      <input
-                        type="text"
-                        value={link.icon || ""}
-                        onChange={(e) => {
-                          const updatedLinks = [...links];
-                          updatedLinks[index].icon = e.target.value;
-                          setLinks(updatedLinks);
-                        }}
-                        className="text-sm text-blue-400 bg-transparent border-b w-full outline-none mt-2"
-                        placeholder="🔗"
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <h3 className="text-lg font-semibold text-black">{link.title}</h3>
-                      <p className="text-blue-400 break-all">{link.url}</p>
-                    </>
-                  )}
+                  <h3 className="text-lg font-semibold text-black">{link.title}</h3>
+                  <p className="text-blue-400 break-all">{link.url}</p>
                 </div>
               </motion.div>
             ))
@@ -204,18 +161,26 @@ const LinktreeTemplate: React.FC = () => {
             <motion.p className="text-white text-center">No links available</motion.p>
           )}
         </div>
+        <button onClick={() => setLinktreeUrl(localStorage.getItem("linktreeUrl") || "")}>
+  Refresh URL
+</button>
 
+        {/* Buttons */}
         <div className="flex justify-center mt-6 space-x-4">
           {isEditing ? (
             <FaSave onClick={handleEdit} className="text-green-500 text-2xl cursor-pointer hover:text-blue-700" />
           ) : (
             <FaEdit onClick={() => setIsEditing(true)} className="text-orange-500 text-2xl cursor-pointer hover:text-blue-700" />
           )}
-          <FaTrash onClick={handleDelete} className="text-red-500 text-2xl cursor-pointer hover:text-red-700" />
+          <FaTrash onClick={() => setShowDeleteConfirmation(true)} className="text-red-500 text-2xl cursor-pointer hover:text-red-700" />
         </div>
 
-        {deleteMessage && <p className="text-green-500 text-center mt-4">{deleteMessage}</p>}
-        {deleteError && <p className="text-red-500 text-center mt-4">{deleteError}</p>}
+        {showDeleteConfirmation && (
+          <div className="text-center mt-4">
+            <p className="text-red-500">Are you sure you want to delete?</p>
+            <button onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-lg mt-2">Confirm Delete</button>
+          </div>
+        )}
       </motion.div>
     </div>
   );

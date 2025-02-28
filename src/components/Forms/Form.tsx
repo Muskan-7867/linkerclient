@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import TitleDropdown from "../dropdowns/titledropdown";
 import IconDropdown from "../dropdowns/icondropdown";
-import axios, { AxiosError } from "axios"; // Import AxiosError for type checking
+import axios, { AxiosError } from "axios"; 
 
 interface Link {
   id: string;
@@ -57,11 +57,15 @@ const Form: React.FC<FormProps> = ({ links, setLinks }) => {
   
       const response = await axios.post("http://localhost:8000/api/v1/link/create", payload);
       console.log("Response:", response.data);
+
+      
   
       // Save to localStorage so LinktreeTemplate can read it
-      localStorage.setItem("treeId", response.data.treeId || "1234");
+      localStorage.setItem("treeId", response.data.link?._id );
       localStorage.setItem("treeName", treeName);
       localStorage.setItem("links", JSON.stringify(payload.links));
+      localStorage.setItem("linktreeUrl", response.data.url);
+    
   
       navigate("/linktree-template");
     } catch (error) {
