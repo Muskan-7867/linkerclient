@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { deletelinktree } from "../services/deletelinktree";
 import { editLinktree } from "../services/editlinktree";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { FaEdit, FaSave, FaTrash, FaCopy, FaExternalLinkAlt } from "react-icons/fa";
 import * as FaIcons from "react-icons/fa";
+import axios from "axios";
 
 interface Link {
   title: string;
@@ -22,6 +23,7 @@ const DynamicIcon = ({ iconName }: { iconName?: string }) => {
 };
 
 const LinktreeTemplate: React.FC = () => {
+  const { linktreeId } = useParams();
   const navigate = useNavigate();
   const [treeId, setTreeId] = useState<string>("");
   const [treeName, setTreeName] = useState<string>("Untitled Linktree");
@@ -49,6 +51,27 @@ const LinktreeTemplate: React.FC = () => {
     if (storedLinks) setLinks(JSON.parse(storedLinks));
     if (storedLinktreeUrl) setLinktreeUrl(storedLinktreeUrl);
   }, []);
+
+  useEffect(() => {
+    const fetchLinktree = async () => {
+      
+      if (linktreeId) {
+        try {
+          const response = await axios.get(`http://localhost:8000/api/v1/link/linktree/${linktreeId}`);
+          const { treeName, links, url } = response.data;
+  
+          setTreeId(treeId);
+          setTreeName(treeName);
+          setLinks(links);
+          setLinktreeUrl(url);
+        } catch (error) {
+          console.error("Error fetching Linktree:", error);
+        }
+      }
+    };
+  
+    fetchLinktree();
+  });
   
   
 
@@ -162,7 +185,7 @@ const LinktreeTemplate: React.FC = () => {
           )}
         </div>
         <button onClick={() => setLinktreeUrl(localStorage.getItem("linktreeUrl") || "")}>
-  Refresh URL
+
 </button>
 
         {/* Buttons */}

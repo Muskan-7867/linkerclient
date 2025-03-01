@@ -22,12 +22,9 @@ interface Link {
   icon: string;
   link: string;
 }
-
 const App: React.FC = () => {
   const location = useLocation();
-  const hideNavbar =
-    location.pathname.startsWith("/templates/") &&
-    location.pathname !== "/templates";
+  const showNavbar = location.pathname === "/"; 
 
   // 🔹 State to store links
   const [links, setLinks] = useState<Link[]>([]);
@@ -36,7 +33,7 @@ const App: React.FC = () => {
   return (
     <>
       <div>
-        {!hideNavbar && <Navbar />}
+        {showNavbar && <Navbar />} {/* Show Navbar only on home page */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -56,12 +53,13 @@ const App: React.FC = () => {
             path="/linktree-template"
             element={<LinktreeTemplate treeName={treeName} links={links} />}
           />
-           <Route path="/linktree/:treeId" element={<LinktreePage />} />
+          <Route path="/linktree/:treeId" element={<LinktreePage />} />
         </Routes>
       </div>
     </>
   );
 };
+
 
 const AppWrapper: React.FC = () => {
   return (

@@ -32,7 +32,7 @@ export const handleCreateLinktree = async (treeName: string, links: Link[], setL
     
     if (response.data?.link?._id) { 
       const linktreeId = response.data.link._id;
-      const linktreeUrl = `http://localhost:8000/api/v1/link/linktree/${linktreeId}`;
+      const linktreeUrl = `http://localhost:5173/linktree/${linktreeId}`;
 
       console.log("Generated Linktree URL:", linktreeUrl);
 
@@ -43,7 +43,11 @@ export const handleCreateLinktree = async (treeName: string, links: Link[], setL
       setLinktreeUrl(linktreeUrl);
     }
   } catch (error) {
-    console.error("Error creating Linktree:", error);
-    alert(error.response?.data?.message || "Failed to create Linktree. Please try again.");
+    if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error("An unknown error occurred.");
+    }
+    
   }
 };
