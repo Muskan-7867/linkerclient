@@ -8,6 +8,7 @@ import * as FaIcons from "react-icons/fa";
 import axios from "axios";
 
 interface Link {
+  
   title: string;
   icon?: string;
   url: string;
@@ -112,7 +113,7 @@ const LinktreeTemplate: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-500 p-6">
+    <div className="min-h-screen flex items-center justify-center  p-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}

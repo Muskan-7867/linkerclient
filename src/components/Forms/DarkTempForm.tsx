@@ -9,6 +9,7 @@ interface ProfileInfo {
 }
 
 interface Link {
+  
   title: string;
   icon: JSX.Element | null;
   link: string;
@@ -28,7 +29,7 @@ const DarkTempForm: React.FC = () => {
   ]);
 
   return (
-    <div className="bg-gradient-to-r  min-h-screen flex items-center justify-center p-6">
+    <div className="  min-h-screen flex items-center justify-center p-6">
     {/* Container */}
     <div className="flex flex-col lg:flex-row gap-8 w-full max-w-screen-lg bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Right Side: Dark Template */}

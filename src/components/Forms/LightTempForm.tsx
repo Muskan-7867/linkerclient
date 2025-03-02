@@ -3,12 +3,14 @@ import Form from "./Form";
 import LightTemplate from "../../pages/Template/LightTemplate";
 
 interface ProfileInfo {
+  
   name: string;
   info: string;
   image: string;
 }
 
 interface Link {
+  
   title: string;
   icon: JSX.Element | null;
   link: string;
@@ -27,7 +29,7 @@ const LightTempForm: React.FC = () => {
   ]);
 
   return (
-    <div className="bg-gradient-to-r  min-h-screen flex items-center justify-center p-6">
+    <div className="  min-h-screen flex items-center  justify-center ">
       {/* Container */}
       <div className="flex flex-col lg:flex-row gap-8 w-full max-w-screen-lg bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Left Side: Light Template */}
@@ -36,6 +38,7 @@ const LightTempForm: React.FC = () => {
         </div>
 
         {/* Right Side: Link Form */}
+        
         <div className="flex-1 p-6 lg:p-8 ">
           <div className=" p-6 rounded-lg shadow-lg ">
             
