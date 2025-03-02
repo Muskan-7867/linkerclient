@@ -1,32 +1,40 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+
 const Home: React.FC = () => {
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
-      {/* Text Section */}
-      <div className="flex flex-col items-center sm:items-start text-center sm:text-left mb-8 sm:mb-0 sm:mr-8">
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-4 animate-fade-in">
-          Welcome to LinkTree!
+    <div className="flex flex-col lg:flex-row items-center justify-between min-h-screen  p-10">
+      
+      {/* Left Content Section */}
+      <div className="max-w-xl text-center lg:text-left">
+        <h1 className="text-5xl font-extrabold text-[#F1FF64] mb-6">
+        Create your personalized link tree and share all your important links in one place.
         </h1>
-        <p className="text-lg sm:text-xl text-white mb-6 animate-fade-in">
-          Create your personalized link tree and share all your important links in one place.
+        <p className="text-lg text-[#F1FF64] mb-6">
+          One link to help you share 
+          everything you create, curate, and sell from Instagram, TikTok, Twitter, YouTube, and more.
         </p>
-        <Link to="/templates">
-          <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-100 transition duration-300 animate-fade-in">
-            Get Started
+
+        {/* Input Box & Button */}
+        <div className="flex flex-col sm:flex-row gap-4">
+         
+          <button className="bg-blue-500 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-800 transition">
+            <Link to="/templates"> Claim your Linktree</Link>
+           
           </button>
-        </Link>
+        </div>
       </div>
 
-      {/* Image Section */}
-      <div className="w-full sm:w-1/2 max-w-md animate-float">
+      {/* Right Image Section */}
+      <div className="relative w-full lg:w-1/2 flex justify-center mt-10 lg:mt-0">
         <img 
-          src="src/assets/welcomeg.png" 
-          alt="Welcome Illustration" 
-          className="w-full h-auto"
+          src="src/assets/welcomeg.png"  
+          alt="Mockup" 
+          className="w-full max-w-md drop-shadow-2xl motion-rotate-in-[0.8turn]"
         />
       </div>
+      
     </div>
   );
 };
