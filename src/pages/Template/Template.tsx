@@ -10,7 +10,7 @@ const Templates: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-8">
+    <div className="min-h-screen  p-8">
       <h1 className="mt-20 text-white text-3xl font-bold text-center mb-12">
         Choose Your Template
       </h1>
