@@ -8,10 +8,10 @@ const Home: React.FC = () => {
       
       {/* Left Content Section */}
       <div className="max-w-xl text-center lg:text-left">
-        <h1 className="text-5xl font-extrabold text-[#F1FF64] mb-6">
+        <h1 className="text-5xl font-extrabold text-[#a3d5c6] mb-6">
         Create your personalized link tree and share all your important links in one place.
         </h1>
-        <p className="text-lg text-[#F1FF64] mb-6">
+        <p className="text-lg text-[#a3d5c6] mb-6">
           One link to help you share 
           everything you create, curate, and sell from Instagram, TikTok, Twitter, YouTube, and more.
         </p>
