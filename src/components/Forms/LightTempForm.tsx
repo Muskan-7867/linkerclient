@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Form from "./Form";
 import LightTemplate from "../../pages/Template/LightTemplate";
+import { Link } from "../../types/link";
 
 interface ProfileInfo {
   
@@ -9,12 +10,7 @@ interface ProfileInfo {
   image: string;
 }
 
-interface Link {
-  
-  title: string;
-  icon: JSX.Element | null;
-  link: string;
-}
+
 
 const LightTempForm: React.FC = () => {
   const [profileInfo] = useState<ProfileInfo>({
@@ -25,9 +21,9 @@ const LightTempForm: React.FC = () => {
   });
 
   const [links, setLinks] = useState<Link[]>([
-    { title: "", icon: null, link: "" }, // Initial single link
+    {id: "", title: "", icon: null, link: "" }, 
   ]);
-
+  const [treeName, setTreeName] = useState<string>(""); 
   return (
     <div className="  min-h-screen flex items-center  justify-center ">
       {/* Container */}
@@ -42,7 +38,7 @@ const LightTempForm: React.FC = () => {
         <div className="flex-1 p-6 lg:p-8 ">
           <div className=" p-6 rounded-lg shadow-lg ">
             
-            <Form links={links} setLinks={setLinks} />
+            <Form links={links} setLinks={setLinks}  treeName={treeName} setTreeName={setTreeName} />
           </div>
         </div>
       </div>

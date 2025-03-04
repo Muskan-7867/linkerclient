@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Form from "./Form";
 import DarkTemplate from "../../pages/Template/DarkTemplate";
+import { Link } from "../../types/link";
+
 
 interface ProfileInfo {
   name: string;
@@ -8,12 +10,7 @@ interface ProfileInfo {
   image: string;
 }
 
-interface Link {
-  
-  title: string;
-  icon: JSX.Element | null;
-  link: string;
-}
+
 
 const DarkTempForm: React.FC = () => {
  
@@ -25,8 +22,10 @@ const DarkTempForm: React.FC = () => {
   });
 
   const [links, setLinks] = useState<Link[]>([
-    { title: "", icon: null, link: "" }, 
+    { id: "", title: "", icon: null, link: "" }, 
   ]);
+
+  const [treeName, setTreeName] = useState<string>(""); 
 
   return (
     <div className="  min-h-screen flex items-center justify-center p-6">
@@ -42,7 +41,7 @@ const DarkTempForm: React.FC = () => {
       <div className="flex-1 p-6 lg:p-8 ">
         <div className=" p-6 rounded-lg shadow-lg ">
           
-          <Form links={links} setLinks={setLinks} />
+          <Form links={links} setLinks={setLinks} treeName={treeName} setTreeName={setTreeName} />
         </div>
       </div>
     </div>
