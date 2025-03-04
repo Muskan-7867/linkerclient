@@ -29,7 +29,7 @@ const Home: React.FC = () => {
       {/* Right Image Section */}
       <div className="relative w-full lg:w-1/2 flex justify-center mt-10 lg:mt-0">
         <img 
-          src="src/assets/welcomeg.png"  
+          src="./images/welcomeg.png"  
           alt="Mockup" 
           className="w-full max-w-md drop-shadow-2xl motion-rotate-in-[0.8turn]"
         />

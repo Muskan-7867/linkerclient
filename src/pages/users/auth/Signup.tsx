@@ -116,7 +116,7 @@ const Signup: React.FC = () => {
         </form>
       </div>
       <img
-        src="src/assets/signup.png"
+        src="./images/signup.png"
         alt="Signup illustration"
         width={350}
         height={350}

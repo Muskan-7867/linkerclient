@@ -95,7 +95,7 @@ const Login: React.FC = () => {
         </form>
       </div>
       <img
-        src="src/assets/login.png"
+        src="./images/login.png"
         alt="Login illustration"
         className="lg:block hidden lg:w-[450px] lg:h-[450px]"
       />

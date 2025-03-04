@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img
-            src="src/assets/treelogo.png"
+            src="./images/treelogo.png"
             alt="Tree Logo"
             className="w-20 h-18"
           />
