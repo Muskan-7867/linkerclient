@@ -1,4 +1,5 @@
 interface Link {
+  
   title: string;
   icon: JSX.Element | null;
   link: string;

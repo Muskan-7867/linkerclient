@@ -1,6 +1,7 @@
 import axios from "axios";
 
 interface Link {
+  
   title: string;
   icon: string; // Store icon name as a string (e.g., "FaHome")
   url: string;

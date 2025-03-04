@@ -18,17 +18,19 @@ import LinktreeTemplate from "./components/LinktreeTemplate";
 import LinktreePage from "./components/LinktreePage";
 
 interface Link {
+  id: string;
   title: string;
-  icon: string;
+  icon: JSX.Element | null;
   link: string;
 }
+
 const App: React.FC = () => {
   const location = useLocation();
   const showNavbar = location.pathname === "/"; 
 
-  // 🔹 State to store links
+  // Define state variables for treeName and links
+  const [treeName, setTreeName] = useState<string>("");
   const [links, setLinks] = useState<Link[]>([]);
-  const [treeName] = useState<string>("");
 
   return (
     <>
@@ -45,13 +47,13 @@ const App: React.FC = () => {
             element={
               <div>
                 <LinksDisplay />
-                <LinkForm links={links} setLinks={setLinks} />
+                <LinkForm treeName={treeName} links={links} setLinks={setLinks} setTreeName={setTreeName} />
               </div>
             }
           />
           <Route
             path="/linktree-template"
-            element={<LinktreeTemplate treeName={treeName} links={links} />}
+            element={<LinktreeTemplate    />}
           />
           <Route path="/linktree/:treeId" element={<LinktreePage />} />
         </Routes>
@@ -59,7 +61,6 @@ const App: React.FC = () => {
     </>
   );
 };
-
 
 const AppWrapper: React.FC = () => {
   return (

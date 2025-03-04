@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import TitleDropdown from "../dropdowns/titledropdown";
 import IconDropdown from "../dropdowns/icondropdown";
@@ -12,12 +12,14 @@ interface Link {
 }
 
 interface FormProps {
+  treeName: string;
   links: Link[];
   setLinks: React.Dispatch<React.SetStateAction<Link[]>>;
+  setTreeName: React.Dispatch<React.SetStateAction<string>>; 
 }
 
-const Form: React.FC<FormProps> = ({ links, setLinks }) => {
-  const [treeName, setTreeName] = useState<string>("");
+const Form: React.FC<FormProps> = ({  treeName, links, setLinks, setTreeName }) => {
+  
   const navigate = useNavigate();
 
   const handleAddLink = () => {
