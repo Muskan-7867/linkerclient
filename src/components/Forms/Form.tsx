@@ -33,6 +33,8 @@ const Form: React.FC<FormProps> = ({  treeName, links, setLinks, setTreeName }) 
   };
 
   const handleCreateLinktree = async () => {
+    
+const API_BASE_URL = process.env.VITE_BACKEND_URL || "http://localhost:8000";
     if (!treeName.trim()) {
       alert("Please enter a tree name.");
       return;
@@ -57,7 +59,7 @@ const Form: React.FC<FormProps> = ({  treeName, links, setLinks, setTreeName }) 
   
       console.log("Payload being sent:", payload);
   
-      const response = await axios.post("http://localhost:8000/api/v1/link/create", payload);
+      const response = await axios.post(`${API_BASE_URL}/api/v1/link/create`, payload);
       console.log("Response:", response.data);
 
       

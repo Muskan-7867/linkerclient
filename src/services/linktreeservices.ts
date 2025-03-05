@@ -7,6 +7,8 @@ interface Link {
   url: string;
 }
 
+const API_BASE_URL = process.env.VITE_BACKEND_URL || "http://localhost:8000";
+
 export const handleCreateLinktree = async (treeName: string, links: Link[], setLinktreeUrl: (url: string) => void) => {
   if (!treeName) {
     alert("Please enter a name for your Linktree.");
@@ -27,7 +29,7 @@ export const handleCreateLinktree = async (treeName: string, links: Link[], setL
       links, // Already structured correctly
     };
 
-    const response = await axios.post("http://localhost:8000/api/v1/link/create", payload);
+    const response = await axios.post(`${API_BASE_URL}/api/v1/link/create`, payload);
 
     console.log("Linktree created successfully:", response.data);
     
