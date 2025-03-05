@@ -34,7 +34,7 @@ const Form: React.FC<FormProps> = ({  treeName, links, setLinks, setTreeName }) 
 
   const handleCreateLinktree = async () => {
     
-const API_BASE_URL = process.env.VITE_BACKEND_URL || "http://localhost:8000";
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
     if (!treeName.trim()) {
       alert("Please enter a tree name.");
       return;
