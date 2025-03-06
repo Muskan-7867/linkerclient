@@ -18,9 +18,14 @@ interface FormProps {
   setTreeName: React.Dispatch<React.SetStateAction<string>>; 
 }
 
-const Form: React.FC<FormProps> = ({  treeName, links, setLinks, setTreeName }) => {
+const Form: React.FC<FormProps> = ({ treeName, links, setLinks, setTreeName }) => {
   
   const navigate = useNavigate();
+  
+  // Ensure API_BASE_URL is defined
+  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000"; 
+
+  console.log("API_BASE_URL:", API_BASE_URL);  // Debugging
 
   const handleAddLink = () => {
     setLinks([...links, { id: crypto.randomUUID(), title: "", icon: null, link: "" }]);
@@ -33,8 +38,6 @@ const Form: React.FC<FormProps> = ({  treeName, links, setLinks, setTreeName }) 
   };
 
   const handleCreateLinktree = async () => {
-    
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL ;
     if (!treeName.trim()) {
       alert("Please enter a tree name.");
       return;
@@ -61,16 +64,17 @@ const API_BASE_URL = import.meta.env.VITE_BACKEND_URL ;
   
       const response = await axios.post(`${API_BASE_URL}/api/v1/link/create`, payload);
       console.log("Response:", response.data);
-
-      
   
-      // Save to localStorage so LinktreeTemplate can read it
-      localStorage.setItem("treeId", response.data.link?._id );
+      if (!response.data || !response.data.link) {
+        throw new Error("Invalid response from server");
+      }
+
+      // Save to localStorage
+      localStorage.setItem("treeId", response.data.link._id);
       localStorage.setItem("treeName", treeName);
       localStorage.setItem("links", JSON.stringify(payload.links));
       localStorage.setItem("linktreeUrl", response.data.url);
     
-  
       navigate("/linktree-template");
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -80,7 +84,6 @@ const API_BASE_URL = import.meta.env.VITE_BACKEND_URL ;
       }
     }
   };
-  
 
   return (
     <div className="max-w-lg mx-auto bg-white rounded-xl shadow-lg p-6">

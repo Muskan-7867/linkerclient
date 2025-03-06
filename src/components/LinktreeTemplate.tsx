@@ -8,7 +8,6 @@ import * as FaIcons from "react-icons/fa";
 import axios from "axios";
 
 interface Link {
-  
   title: string;
   icon?: string;
   url: string;
@@ -18,21 +17,17 @@ const DynamicIcon = ({ iconName }: { iconName?: string }) => {
   if (!iconName || !(iconName in FaIcons)) {
     return <span className="text-xl">🔗</span>;
   }
-
   const IconComponent = FaIcons[iconName as keyof typeof FaIcons];
   return <IconComponent className="text-xl text-blue-500" />;
 };
 
 const LinktreeTemplate: React.FC = () => {
-  
-
   const { linktreeId } = useParams();
   const navigate = useNavigate();
   const [treeId, setTreeId] = useState<string>("");
   const [treeName, setTreeName] = useState<string>("Untitled Linktree");
   const [links, setLinks] = useState<Link[]>([]);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  // const [deleteMessage, setDeleteMessage] = useState<string>("");
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
   const [linktreeUrl, setLinktreeUrl] = useState<string>("");
 
@@ -41,14 +36,14 @@ const LinktreeTemplate: React.FC = () => {
     const storedTreeName = localStorage.getItem("treeName");
     const storedLinks = localStorage.getItem("links");
     const storedLinktreeUrl = localStorage.getItem("linktreeUrl");
-  
+
     console.log("LocalStorage Data:", {
       storedTreeId,
       storedTreeName,
       storedLinks,
-      storedLinktreeUrl
+      storedLinktreeUrl,
     });
-  
+
     if (storedTreeId) setTreeId(storedTreeId);
     if (storedTreeName) setTreeName(storedTreeName);
     if (storedLinks) setLinks(JSON.parse(storedLinks));
@@ -56,28 +51,25 @@ const LinktreeTemplate: React.FC = () => {
   }, []);
 
   useEffect(() => {
-   const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const fetchLinktree = async () => {
-      
-      if (linktreeId) {
-        try {
-          const response = await axios.get(`${BACKEND_URL}/api/v1/link/linktree/${linktreeId}`);
-          const { treeName, links, url } = response.data;
-  
-          setTreeId(treeId);
-          setTreeName(treeName);
-          setLinks(links);
-          setLinktreeUrl(url);
-        } catch (error) {
-          console.error("Error fetching Linktree:", error);
-        }
+      if (!linktreeId) return;
+
+      try {
+        const response = await axios.get(`${BACKEND_URL}/api/v1/link/linktree/${linktreeId}`);
+        const { treeName, links, url } = response.data;
+
+        setTreeId(linktreeId); // Fix: Use linktreeId instead of treeId
+        setTreeName(treeName);
+        setLinks(links);
+        setLinktreeUrl(url);
+      } catch (error) {
+        console.error("Error fetching Linktree:", error);
       }
     };
-  
+
     fetchLinktree();
-  });
-  
-  
+  }, [linktreeId]); // Fix: Add dependency to prevent infinite loop
 
   const handleEdit = async () => {
     try {
@@ -116,7 +108,7 @@ const LinktreeTemplate: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  p-6">
+    <div className="min-h-screen flex items-center justify-center p-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -174,7 +166,10 @@ const LinktreeTemplate: React.FC = () => {
         <div className="mt-6 space-y-4">
           {links.length > 0 ? (
             links.map((link, index) => (
-              <motion.div key={index} className="p-4 bg-white bg-opacity-20 rounded-xl shadow-lg flex items-center transition hover:scale-105 hover:shadow-xl">
+              <motion.div
+                key={index}
+                className="p-4 bg-white bg-opacity-20 rounded-xl shadow-lg flex items-center transition hover:scale-105 hover:shadow-xl"
+              >
                 <div className="w-12 h-12 flex items-center justify-center bg-white rounded-full mr-4">
                   <DynamicIcon iconName={link.icon} />
                 </div>
@@ -188,9 +183,6 @@ const LinktreeTemplate: React.FC = () => {
             <motion.p className="text-white text-center">No links available</motion.p>
           )}
         </div>
-        <button onClick={() => setLinktreeUrl(localStorage.getItem("linktreeUrl") || "")}>
-
-</button>
 
         {/* Buttons */}
         <div className="flex justify-center mt-6 space-x-4">
@@ -201,13 +193,6 @@ const LinktreeTemplate: React.FC = () => {
           )}
           <FaTrash onClick={() => setShowDeleteConfirmation(true)} className="text-red-500 text-2xl cursor-pointer hover:text-red-700" />
         </div>
-
-        {showDeleteConfirmation && (
-          <div className="text-center mt-4">
-            <p className="text-red-500">Are you sure you want to delete?</p>
-            <button onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-lg mt-2">Confirm Delete</button>
-          </div>
-        )}
       </motion.div>
     </div>
   );

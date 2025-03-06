@@ -7,8 +7,8 @@ interface Link {
   url: string;
 }
 
-const API_BASE_URL = process.env.VITE_BACKEND_URL 
-const FRONTEND_URL = process.env.VITE_FRONTEND_URL
+const API_BASE_URL = process.env.VITE_BACKEND_URL || "http://localhost:8000";
+const FRONTEND_URL = process.env.VITE_FRONTEND_URL || "http://localhost:5173";
 
 export const handleCreateLinktree = async (treeName: string, links: Link[], setLinktreeUrl: (url: string) => void) => {
   if (!treeName) {
