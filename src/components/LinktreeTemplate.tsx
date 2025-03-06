@@ -193,6 +193,12 @@ const LinktreeTemplate: React.FC = () => {
           )}
           <FaTrash onClick={() => setShowDeleteConfirmation(true)} className="text-red-500 text-2xl cursor-pointer hover:text-red-700" />
         </div>
+        {showDeleteConfirmation && (
+          <div className="text-center mt-4">
+            <p className="text-red-500">Are you sure you want to delete?</p>
+            <button onClick={handleDelete} className="bg-red-600 text-white px-4 py-2 rounded-lg mt-2">Confirm Delete</button>
+          </div>
+        )}
       </motion.div>
     </div>
   );
