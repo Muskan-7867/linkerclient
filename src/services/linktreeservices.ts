@@ -8,6 +8,7 @@ interface Link {
 }
 
 const API_BASE_URL = process.env.VITE_BACKEND_URL 
+const FRONTEND_URL = process.env.VITE_FRONTEND_URL
 
 export const handleCreateLinktree = async (treeName: string, links: Link[], setLinktreeUrl: (url: string) => void) => {
   if (!treeName) {
@@ -35,7 +36,7 @@ export const handleCreateLinktree = async (treeName: string, links: Link[], setL
     
     if (response.data?.link?._id) { 
       const linktreeId = response.data.link._id;
-      const linktreeUrl = `http://localhost:5173/linktree/${linktreeId}`;
+      const linktreeUrl = `${FRONTEND_URL}/linktree/${linktreeId}`;
 
       console.log("Generated Linktree URL:", linktreeUrl);
 

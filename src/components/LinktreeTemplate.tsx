@@ -24,6 +24,8 @@ const DynamicIcon = ({ iconName }: { iconName?: string }) => {
 };
 
 const LinktreeTemplate: React.FC = () => {
+  
+
   const { linktreeId } = useParams();
   const navigate = useNavigate();
   const [treeId, setTreeId] = useState<string>("");
@@ -54,11 +56,12 @@ const LinktreeTemplate: React.FC = () => {
   }, []);
 
   useEffect(() => {
+   const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
     const fetchLinktree = async () => {
       
       if (linktreeId) {
         try {
-          const response = await axios.get(`http://localhost:8000/api/v1/link/linktree/${linktreeId}`);
+          const response = await axios.get(`${BACKEND_URL}/api/v1/link/linktree/${linktreeId}`);
           const { treeName, links, url } = response.data;
   
           setTreeId(treeId);

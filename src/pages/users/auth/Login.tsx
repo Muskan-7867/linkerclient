@@ -8,7 +8,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-
+  const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 
     try {
       // Call the backend login API
-      const response = await axios.post('http://localhost:8000/api/v1/user/login', {
+      const response = await axios.post(`${BACKEND_URL}/api/v1/user/login`, {
         email: username, 
         password,
       });
