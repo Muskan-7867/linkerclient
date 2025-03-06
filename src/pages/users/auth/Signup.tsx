@@ -8,7 +8,7 @@ const Signup: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);  
    const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>("");
-  const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
   const navigate = useNavigate();
   // Properly typing the event for form submission

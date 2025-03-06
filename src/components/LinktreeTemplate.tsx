@@ -51,7 +51,7 @@ const LinktreeTemplate: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
     const fetchLinktree = async () => {
       if (!linktreeId) return;
 

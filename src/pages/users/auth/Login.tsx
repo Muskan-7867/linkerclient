@@ -8,7 +8,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
