@@ -8,7 +8,7 @@ const Signup: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);  
    const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>("");
-  const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+  
 
   const navigate = useNavigate();
   // Properly typing the event for form submission
@@ -21,7 +21,7 @@ const Signup: React.FC = () => {
     setMessage('');
 
     try {
-      const response = await fetch(`${BACKEND_URL}/api/v1/user/register`, {
+      const response = await fetch("http://localhost:8000/api/v1/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,7 +36,10 @@ const Signup: React.FC = () => {
       const data = await response.json();
       console.log("User created successfully:", data);
       setMessage(' User Register successfully!');
-      navigate("/login");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
       
     } catch (err) {
       console.error("Error creating user:", err);
@@ -104,9 +107,9 @@ const Signup: React.FC = () => {
             {loading ? "Registering..." : "Register"}
           </button>
           {message && (
-            <p className="mt-4 text-center text-white text-sm">{message}</p>
+            <p className="mt-4 text-center text-green-700 text-sm">{message}</p>
           )}
-          {error && <p className="text-red-500 text-center mt-4">{error}</p>}  {/* Show error message */}
+          {error && <p className="text-red-500 text-center mt-4">{error}</p>} 
           <p className="mt-4 text-center text-white text-sm">
             Already have an account?{" "}
             <a href="/login" className="text-white hover:underline">
