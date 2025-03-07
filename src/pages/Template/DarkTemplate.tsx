@@ -1,9 +1,4 @@
-interface Link {
-  
-  title: string;
-  icon: JSX.Element | null;
-  link: string;
-}
+import  { Link } from "../../types/link";
 
 interface ProfileInfo {
   name: string;
@@ -20,15 +15,16 @@ const DarkTemplate: React.FC<DarkTemplateProps> = ({ profileInfo, links }) => {
   return (
     <div className="text-center p-6 bg-gray-800 text-white mt-[20%] rounded-lg shadow-lg w-[90%] sm:w-[24rem] md:w-[28rem] lg:w-[20rem] mx-auto">
       {/* Profile Info */}
-      <div className="flex flex-col items-center mb-6">
-        <img
-          src={profileInfo.image}
-          alt="Profile"
-          className="w-24 h-24 rounded-full mb-4"
-        />
-        <h2 className="text-xl font-bold text-white">{profileInfo.name}</h2>
-        <p className="text-white">{profileInfo.info}</p>
-      </div>
+      <img
+        src={profileInfo.image ||  "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="}
+        alt="Profile"
+        className="w-24 h-24 rounded-full mx-auto"
+      />
+
+      {/* Name & Info */}
+      <h2 className="text-xl font-semibold mt-4">{profileInfo.name || "Your Name"}</h2>
+      <p className="text-gray-600">{profileInfo.info || "Info"}</p>
+
 
       {/* Links */}
       <div className="space-y-4">

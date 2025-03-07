@@ -137,7 +137,7 @@ const LinktreeTemplate: React.FC = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-3xl font-bold text-center border-b pb-2 mb-6"
+            className="text-3xl font-bold text-center border-b pb-2 "
           >
             {treeName}
           </motion.h2>
@@ -145,8 +145,8 @@ const LinktreeTemplate: React.FC = () => {
 
         {/* Display Linktree URL */}
         {linktreeUrl && (
-          <div className="flex items-center justify-between bg-gray-200 px-4 py-2 rounded-lg mb-4">
-            <span className="text-gray-700 truncate">{linktreeUrl}</span>
+          <div className="flex items-center justify-between bg-gray-200 px-4 py-2 rounded-lg mt-12">
+            <span className="text-gray-700  truncate">{linktreeUrl}</span>
             <div className="flex space-x-2">
               <FaCopy
                 className="text-gray-600 cursor-pointer hover:text-black"
