@@ -4,6 +4,7 @@ import LightTemplate from "../pages/Template/LightTemplate";
 import DarkTemplate from "../pages/Template/DarkTemplate";
 
 interface Link {
+  id: string;
   title: string;
   icon?: string;
   url: string;
@@ -40,15 +41,17 @@ const LinktreePage: React.FC = () => {
   const profileInfo = {
     name: treeName,
     info: "Welcome to my link collection!",
-    image: "https://via.placeholder.com/150",
+    image: "",
   };
 
   // Convert links to Template format
   const formattedLinks = links.map((link) => ({
+    id: link.id, // Ensure this exists
     title: link.title,
     icon: link.icon ? <DynamicIcon iconName={link.icon} /> : null,
     link: link.url,
   }));
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen  p-6">
