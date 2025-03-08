@@ -1,7 +1,11 @@
 import axios from 'axios';
 
 export const deletelinktree = async (id: string) => {
-  const  BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+  const isProduction = import.meta.env.PROD; // Vite-specific
+
+  const BACKEND_URL = isProduction
+    ? process.env.VITE_BACKEND_URL
+    : "http://localhost:8000";
   if (!id) {
     throw new Error("Linktree id is required");
   }

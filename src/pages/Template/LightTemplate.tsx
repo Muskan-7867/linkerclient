@@ -23,7 +23,7 @@ const LightTemplate: React.FC<LightTemplateProps> = ({ profileInfo, links }) => 
 
       {/* Name & Info */}
       <h2 className="text-xl font-semibold mt-4">{profileInfo.name || "Your Name"}</h2>
-      <p className="text-gray-600 ">{profileInfo.info || "Info"}</p>
+      <p className="text-gray-600 mb-4 ">{profileInfo.info || "Info"}</p>
 
       {/* Links with Icons */}
       <div className="space-y-4 mt-4">

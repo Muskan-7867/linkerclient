@@ -5,8 +5,8 @@ const Templates: React.FC = () => {
   const navigate = useNavigate();
 
   const templates = [
-    { id: 1, name: "Light Theme", image: "./images/lightTheme.png" },
-    { id: 2, name: "Dark Theme", image: "./images/DarkTheme.png" },
+    { id: 1, name: "", image: "./images/lightTheme.png" },
+    { id: 2, name: "", image: "./images/DarkTheme.png" },
   ];
 
   const handleSelectTemplate = (template: { id: number; name: string }) => {

@@ -8,7 +8,11 @@ const Signup: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);  
    const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>("");
-  
+  const isProduction = import.meta.env.PROD; // Vite-specific
+
+  const BACKEND_URL = isProduction
+    ? process.env.VITE_BACKEND_URL
+    : "http://localhost:8000";
 
   const navigate = useNavigate();
   // Properly typing the event for form submission
@@ -21,7 +25,7 @@ const Signup: React.FC = () => {
     setMessage('');
 
     try {
-      const response = await fetch("http://localhost:8000/api/v1/user/register", {
+      const response = await fetch(`${BACKEND_URL}/api/v1/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

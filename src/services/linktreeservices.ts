@@ -7,8 +7,13 @@ interface Link {
   url: string;
 }
 
-const API_BASE_URL = process.env.VITE_BACKEND_URL || "http://localhost:8000";
-const FRONTEND_URL = process.env.VITE_FRONTEND_URL || "http://localhost:5173";
+const isProduction = import.meta.env.PROD; // Vite-specific
+const FRONTEND_URL = isProduction
+  ? process.env.VITE_FRONTEND_URL
+  : "http://localhost:5173";
+const BACKEND_URL = isProduction
+  ? process.env.VITE_BACKEND_URL
+  : "http://localhost:8000";
 
 export const handleCreateLinktree = async (treeName: string, links: Link[], setLinktreeUrl: (url: string) => void) => {
   if (!treeName) {
@@ -30,7 +35,7 @@ export const handleCreateLinktree = async (treeName: string, links: Link[], setL
       links, // Already structured correctly
     };
 
-    const response = await axios.post(`${API_BASE_URL}/api/v1/link/create`, payload);
+    const response = await axios.post(`${BACKEND_URL}/api/v1/link/create`, payload);
 
     console.log("Linktree created successfully:", response.data);
     

@@ -22,10 +22,14 @@ const Form: React.FC<FormProps> = ({ treeName, links, setLinks, setTreeName }) =
   
   const navigate = useNavigate();
   
-  // Ensure API_BASE_URL is defined
-  const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000"; 
+  const isProduction = import.meta.env.PROD; // Vite-specific
+ 
+  const BACKEND_URL = isProduction
+    ? process.env.BACKEND_URL 
+    : "http://localhost:8000";
+ 
 
-  console.log("API_BASE_URL:", API_BASE_URL);  // Debugging
+  console.log("BACKEND_URL:",BACKEND_URL );  
 
   const handleAddLink = () => {
     setLinks([...links, { id: crypto.randomUUID(), title: "", icon: null, link: "" }]);
@@ -62,7 +66,7 @@ const Form: React.FC<FormProps> = ({ treeName, links, setLinks, setTreeName }) =
   
       console.log("Payload being sent:", payload);
   
-      const response = await axios.post(`${API_BASE_URL}/api/v1/link/create`, payload);
+      const response = await axios.post(`${BACKEND_URL}/api/v1/link/create`, payload);
       console.log("Response:", response.data);
   
       if (!response.data || !response.data.link) {
