@@ -4,8 +4,8 @@ import { FaBars } from "react-icons/fa";
 //navbar
 const Navbar: React.FC = () => {
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-10">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+    <nav className="bg-white w-[80vw] absolute top-10 right-[10vw] rounded-full p-7">
+      <div className=" mx-auto px-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img

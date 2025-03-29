@@ -51,16 +51,16 @@ const LinktreeTemplate: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const isProduction = import.meta.env.PROD; // Vite-specific
     
-    const BACKEND_URL = isProduction
-      ? process.env.VITE_BACKEND_URL
-      : "http://localhost:8000";
+    
+    const BACKEND_URL = "http://localhost:8083";
     const fetchLinktree = async () => {
       if (!linktreeId) return;
 
       try {
         const response = await axios.get(`${BACKEND_URL}/api/v1/link/linktree/${linktreeId}`);
+        console.log("Fetched Linktree Data:", response);
+        
         const { treeName, links, url } = response.data;
 
         setTreeId(linktreeId); // Fix: Use linktreeId instead of treeId
@@ -80,9 +80,9 @@ const LinktreeTemplate: React.FC = () => {
       const data = { id: treeId, treeName, links };
       await editLinktree(data);
 
-      localStorage.setItem("treeId", treeId);
-      localStorage.setItem("treeName", treeName);
-      localStorage.setItem("links", JSON.stringify(links));
+      // localStorage.setItem("treeId", treeId);   bkwas
+      // localStorage.setItem("treeName", treeName);
+      // localStorage.setItem("links", JSON.stringify(links));
 
       alert("✅ Linktree updated successfully!");
       setIsEditing(false);

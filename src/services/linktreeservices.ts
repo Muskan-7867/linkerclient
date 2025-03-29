@@ -7,13 +7,10 @@ interface Link {
   url: string;
 }
 
-const isProduction = import.meta.env.PROD; // Vite-specific
-const FRONTEND_URL = isProduction
-  ? process.env.VITE_FRONTEND_URL
-  : "http://localhost:5173";
-const BACKEND_URL = isProduction
-  ? process.env.VITE_BACKEND_URL
-  : "http://localhost:8000";
+
+const BACKEND_URL = "http://localhost:8083";
+
+const FRONTEND_URL =  "http://localhost:5173";
 
 export const handleCreateLinktree = async (treeName: string, links: Link[], setLinktreeUrl: (url: string) => void) => {
   if (!treeName) {
