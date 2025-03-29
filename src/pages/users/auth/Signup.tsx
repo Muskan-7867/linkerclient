@@ -8,11 +8,8 @@ const Signup: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);  
    const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>("");
-  const isProduction = import.meta.env.PROD; // Vite-specific
 
-  const BACKEND_URL = isProduction
-    ? process.env.VITE_BACKEND_URL
-    : "http://localhost:8000";
+  const BACKEND_URL = process.env.VITE_BACKEND_URL || "http://localhost:8083";
 
   const navigate = useNavigate();
   // Properly typing the event for form submission

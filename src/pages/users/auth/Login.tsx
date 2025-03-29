@@ -8,11 +8,8 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const isProduction = import.meta.env.PROD; // Vite-specific
-
-const BACKEND_URL = isProduction
-  ? process.env.VITE_BACKEND_URL
-  : "http://localhost:8000";
+  
+  const BACKEND_URL = process.env.VITE_BACKEND_URL || "http://localhost:8083";
 
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
