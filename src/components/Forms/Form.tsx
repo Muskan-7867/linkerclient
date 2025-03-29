@@ -22,11 +22,9 @@ const Form: React.FC<FormProps> = ({ treeName, links, setLinks, setTreeName }) =
   
   const navigate = useNavigate();
   
-  const isProduction = import.meta.env.PROD; // Vite-specific
+  
  
-  const BACKEND_URL = isProduction
-    ? process.env.BACKEND_URL 
-    : "http://localhost:8000";
+  const BACKEND_URL =  import.meta.env.BACKEND_URL || "http://localhost:8083";
  
 
   console.log("BACKEND_URL:",BACKEND_URL );  
