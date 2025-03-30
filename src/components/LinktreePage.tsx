@@ -50,7 +50,7 @@ const LinktreePage: React.FC = () => {
       return;
     }
 
-    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+    const BACKEND_URL = "http://localhost:8083";
     try {
       setLoading(true);
       setError(null);
