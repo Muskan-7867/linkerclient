@@ -1,13 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import * as FaIcons from "react-icons/fa";
 import LightTemplate from "../pages/Template/LightTemplate";
 import DarkTemplate from "../pages/Template/DarkTemplate";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 interface Link {
   id: string;
   title: string;
   icon?: string;
   url: string;
+}
+
+interface ApiLink {
+  _id: string;
+  title: string;
+  icon?: string;
+  url: string;
+}
+
+interface LinktreeData {
+  treeName?: string;
+  links?: ApiLink[];
 }
 
 // Dynamic Icon Component
@@ -23,43 +37,102 @@ const DynamicIcon = ({ iconName }: { iconName?: string }) => {
 const LinktreePage: React.FC = () => {
   const [treeName, setTreeName] = useState<string>("My Linktree");
   const [links, setLinks] = useState<Link[]>([]);
-  const [theme, setTheme] = useState<string>("light"); // Default theme
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const { treeId } = useParams<{ treeId: string }>();
+  
+  const theme = "light";  // Set theme directly
+
+  const fetchLinktree = useCallback(async () => {
+    if (!treeId) {
+      setError("No treeId provided");
+      setLoading(false);
+      return;
+    }
+
+    const BACKEND_URL = "http://localhost:8083";
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await axios.get(`${BACKEND_URL}/api/v1/link/linktree/${treeId}`);
+      const data = response.data;
+
+      const linktreeData: LinktreeData = data.linktree;
+
+      if (linktreeData?.treeName) {
+        setTreeName(linktreeData.treeName);
+      }
+
+      if (linktreeData?.links && Array.isArray(linktreeData.links)) {
+        setLinks(linktreeData.links.map((link: ApiLink) => ({
+          id: link._id,
+          title: link.title,
+          icon: link.icon,
+          url: link.url
+        })));
+      } else {
+        setLinks([]);
+      }
+
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  }, [treeId]);
 
   useEffect(() => {
-    const storedTreeName = localStorage.getItem("treeName");
-    const storedLinks = localStorage.getItem("links");
-    const storedTheme = localStorage.getItem("selectedTheme"); 
+    fetchLinktree();
+  }, [treeId, fetchLinktree]);
 
-    if (storedTreeName) setTreeName(storedTreeName);
-    if (storedLinks) setLinks(JSON.parse(storedLinks));
-    if (storedTheme) {
-      setTheme(storedTheme === "Dark Theme" ? "dark" : "light"); 
-    }
-  }, []);
+  const formattedLinks = links?.map((link: Link) => ({
+    id: link.id || Math.random().toString(),
+    title: link.title || "Untitled Link",
+    icon: link.icon ? <DynamicIcon iconName={link.icon} /> : null,
+    link: link.url || "#",
+  })) || [];
 
-  // Profile Info
   const profileInfo = {
-    name: treeName,
+    name: treeName || "My Linktree",
     info: "Welcome to my link collection!",
     image: "",
   };
 
-  // Convert links to Template format
-  const formattedLinks = links.map((link) => ({
-    id: link.id, // Ensure this exists
-    title: link.title,
-    icon: link.icon ? <DynamicIcon iconName={link.icon} /> : null,
-    link: link.url,
-  }));
-  
+  const templateProps = {
+    profileInfo,
+    links: formattedLinks,
+  };
+
+  if (loading) {
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-red-500">Error: {error}</div>
+        <button 
+          onClick={fetchLinktree}
+          className="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen  p-6">
+    <div className="flex items-center justify-center min-h-screen p-6">
       <div className="w-full max-w-lg">
         {theme === "light" ? (
-          <LightTemplate profileInfo={profileInfo} links={formattedLinks} />
+          <LightTemplate {...templateProps} />
         ) : (
-          <DarkTemplate profileInfo={profileInfo} links={formattedLinks} />
+          <DarkTemplate {...templateProps} />
+        )}
+        {links.length === 0 && (
+          <div className="text-center text-gray-500 mt-4">No links available</div>
         )}
       </div>
     </div>
