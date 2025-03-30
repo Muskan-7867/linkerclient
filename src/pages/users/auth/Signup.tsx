@@ -9,8 +9,7 @@ const Signup: React.FC = () => {
    const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>("");
 
-  const BACKEND_URL = process.env.VITE_BACKEND_URL || "http://localhost:8083";
-
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL 
   const navigate = useNavigate();
   // Properly typing the event for form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

@@ -9,7 +9,7 @@ const Login: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   
-  const BACKEND_URL = process.env.VITE_BACKEND_URL || "http://localhost:8083";
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL 
 
   const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
