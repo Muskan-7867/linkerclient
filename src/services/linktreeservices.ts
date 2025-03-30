@@ -8,9 +8,9 @@ interface Link {
 }
 
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+const BACKEND_URL = "http://localhost:8083";
 
-const FRONTEND_URL =  process.env.VITE_FRONTEND_URL;
+const FRONTEND_URL =  "http://localhost:5173";
 
 export const handleCreateLinktree = async (treeName: string, links: Link[], setLinktreeUrl: (url: string) => void) => {
   if (!treeName) {
