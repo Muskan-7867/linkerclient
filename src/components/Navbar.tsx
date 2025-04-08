@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
         damping: 10,
         delay: 0.2 
       }}
-      className="fixed top-0 left-0 w-full backdrop-blur-2xl bg-[#0a192f]/90 p-4 border-b border-[#64ffda]/20 shadow-lg z-50"
+      className="fixed top-0 left-0 w-full backdrop-blur-2xl bg-white  p-4 border-b border-[#64ffda]/20 shadow-lg z-50"
     >
       <div className="max-w mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
         <Link to="/" className="flex items-center">
@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
                   {hovered === index && (
                     <motion.span
                       layoutId="navHover"
-                      className="absolute inset-0 rounded-full z-10 bg-[#64ffda]/10"
+                      className="absolute inset-0 rounded-full z-10 bg-[#172a45]"
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center space-x-4">
             <Link to="/login">
               <motion.button
-                className="text-[#64ffda] hover:bg-[#64ffda]/10 px-4 py-2 rounded-md border border-[#64ffda] transition-all duration-300"
+                className="text-[#64ffda] hover:bg-[#172a45] px-4 py-2 rounded-md border border-[#64ffda] transition-all duration-300"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
             </Link>
             <Link to="/signup">
               <motion.button
-                className="bg-[#64ffda] hover:bg-[#52e5c4] px-6 py-2 rounded-full text-[#0a192f] font-medium transition-all duration-300 shadow-md hover:shadow-[#64ffda]/20"
+                className="bg-[#172a45] px-6 py-2 rounded-full text-white font-medium transition-all duration-300 shadow-md hover:shadow-[#64ffda]/20"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
               >
