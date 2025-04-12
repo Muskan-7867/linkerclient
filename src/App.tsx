@@ -6,16 +6,16 @@ import {
   useLocation,
 } from "react-router-dom";
 import { LinksProvider } from "./context/LinksContext";
-import Login from "./pages/users/auth/Login";
-import Signup from "./pages/users/auth/Signup";
-import Home from "./components/Home";
-import Navbar from "./components/Navbar";
+import Login from "./auth/Login";
+import Signup from "./auth/Signup";
+import Home from "./pages/home/Home";
+import Navbar from "./components/common/Navbar";
 import Templates from "./pages/Template/Template";
-import TemplateDetail from "./pages/Template/TemplateDetail";
-import LinksDisplay from "./components/LinkDisplay";
-import LinkForm from "./components/Forms/Form";
-import LinktreeTemplate from "./components/LinktreeTemplate";
-import LinktreePage from "./components/LinktreePage";
+import TemplateDetail from "./pages/Template/components/TemplateDetail";
+import LinksDisplay from "./pages/linktree/components/LinkDisplay";
+import LinkForm from "./pages/Forms/Form";
+import LinktreeTemplate from "./pages/linktree/components/LinktreeTemplate";
+import LinktreePage from "./pages/linktree/components/LinktreePage";
 
 interface Link {
   id: string;
