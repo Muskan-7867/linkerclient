@@ -1,130 +1,121 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import InputField from '../../../components/InputField';
+import PasswordField from '../../../components/PasswordField';
+import UserIcon from "../../../../public/svg/user-icon.svg"
+import { register } from "../../../services/authService";
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);  
-   const [message, setMessage] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
   const [error, setError] = useState<string>("");
-
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL 
   const navigate = useNavigate();
-  // Properly typing the event for form submission
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    // Show loading state and clear previous error
     setLoading(true);
     setError("");
     setMessage('');
-
+  
     try {
-      const response = await fetch(`${BACKEND_URL}/api/v1/user/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, username, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error creating user");
-      }
-
-      const data = await response.json();
-      console.log("User created successfully:", data);
-      setMessage(' User Register successfully!');
-
-      setTimeout(() => {
-        navigate("/login");
-      }, 2000);
-      
-    } catch (err) {
+      const response = await register(username, email, password);
+      localStorage.setItem('token', response.accesstoken);
+      setMessage('User registered successfully!');
+      navigate("/login");
+    } catch (err: unknown) {
       console.error("Error creating user:", err);
-      setError("An error occurred while creating the account.");
+      
+      let errorMessage = "An error occurred while creating the account.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
     } finally {
-      setLoading(false);  
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center gap-[10%]  min-h-screen">
-      <div className="bg-white bg-opacity-20 shadow-lg p-8 rounded-lg w-full max-w-sm">
-        <h2 className="mb-6 font-bold text-2xl text-white text-center">Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block font-medium text-left text-white text-lg">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="block border-gray-300 mt-1 p-2 border rounded-md focus:ring-1 focus:ring-black w-full focus:outline-none"
-            />
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl">
+        <div className="flex flex-col items-center">
+          <div className="mb-8 text-center">
+            <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-4 mx-auto">
+              <img src={UserIcon} alt="User icon" className="w-10 h-10 text-emerald-600" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-800 mb-2">Welcome </h1>
+            <p className="text-gray-600">Please enter your details to Creat your account</p>
           </div>
-          <div className="mb-4">
-            <label htmlFor="username" className="block font-medium text-left text-white text-lg">
-              Username
-            </label>
-            <input
+
+          <form onSubmit={handleSubmit} className="w-full space-y-5">
+
+            <InputField
               type="text"
-              id="username"
-              name="username"
-              placeholder="Enter your username"
-              required
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="block border-gray-300 mt-1 p-2 border rounded-md focus:ring-1 focus:ring-black w-full focus:outline-none"
+              placeholder="Enter username"
+              label="UserName"
+              id="username"
+              name="username"
             />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block font-medium text-left text-white text-lg">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Enter your password"
-              required
+
+            <InputField
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="your@email.com"
+              label="Email"
+              id="email"
+              name="email"
+            />
+
+            <PasswordField
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block border-gray-300 mt-1 p-2 border rounded-md focus:ring-1 focus:ring-black w-full focus:outline-none"
+              label="Password"
+              id="password"
+              name="password"
             />
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-500 py-2 rounded-md w-full text-white transition duration-200"
-            disabled={loading}  
-          >
-            {loading ? "Registering..." : "Register"}
-          </button>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-3 px-4 rounded-lg font-medium text-white ${loading ? 'bg-emerald-400' : 'bg-emerald-600 hover:bg-emerald-700'} transition duration-200 flex items-center justify-center shadow-md`}
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Signing up...
+                </>
+              ) : 'Sign Up'}
+            </button>
+          </form>
+
           {message && (
-            <p className="mt-4 text-center text-green-700 text-sm">{message}</p>
+            <div className={`mt-4 p-3 rounded-lg text-sm text-center ${message.includes('success') ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
+              {message}
+            </div>
           )}
-          {error && <p className="text-red-500 text-center mt-4">{error}</p>} 
-          <p className="mt-4 text-center text-white text-sm">
-            Already have an account?{" "}
-            <a href="/login" className="text-white hover:underline">
-              Login
-            </a>
-          </p>
-        </form>
+          {error && (
+            <p className="text-red-400">{error}</p>
+          )}
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Already have an account?{' '}
+              <Link to="/login" className="font-medium text-emerald-600 hover:text-emerald-500">
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
-      <img
-        src="./images/signup.png"
-        alt="Signup illustration"
-        width={350}
-        height={350}
-        className="lg:block hidden lg:w-[450px] lg:h-[450px]"
-      />
     </div>
   );
 };
